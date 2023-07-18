@@ -35,6 +35,12 @@ export default function Menu() {
         >
           Login
         </NavLink>
+        <NavLink
+          to="board"
+          style={({ isActive }) => (isActive ? activeStyles : null)}
+        >
+         Board
+        </NavLink>
       </nav>
     </div>
   );
