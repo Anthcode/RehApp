@@ -73,54 +73,32 @@ const WaveSurferPlayer = (props) => {
   )
 }
 
-// Another React component that will render two wavesurfers
-const App = () => {
-  const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
-  const [audioUrl, setAudioUrl] = useState(urls[0])
 
-  // Swap the audio URL
-  const onUrlChange = useCallback(() => {
-    urls.reverse()
-    setAudioUrl(urls[0])
-  }, [])
-
-  // Render the wavesurfer component
-  // and a button to load a different audio file
-  return (
-    <>
-      <WaveSurferPlayer
-        height={100}
-        waveColor="rgb(200, 0, 200)"
-        progressColor="rgb(100, 0, 100)"
-        url={audioUrl}
-        plugins={[Timeline.create()]}
-      />
-
-      <button onClick={onUrlChange}>Change audio</button>
-    </>
-  )
-}
 
 export default function Board() {
 
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState();
   
   
 
-  const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
+/*  // const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
+  const urls = [file]
   const [audioUrl, setAudioUrl] = useState(urls[0])
    // Swap the audio URL
    const onUrlChange = useCallback(() => {
     urls.reverse()
     setAudioUrl(urls[0])
-  }, [])
+  }, []) */
 
 
 
   const handleFileChange = (e) => {
-    if (e.target.files) {
+
+
+
+ 
       setFile(e.target.files[0]);
-    }
+    
   };
 
 
@@ -139,11 +117,9 @@ export default function Board() {
         height={100}
         waveColor="rgb(200, 0, 200)"
         progressColor="rgb(100, 0, 100)"
-        url={audioUrl}
+        url="https://wavesurfer-js.org//wavesurfer-code/examples/audio/audio.wav"
         plugins={[Timeline.create()]}
       />
-
-      <button onClick={onUrlChange}>Change audio</button>
        
       </section>  
     </div>
