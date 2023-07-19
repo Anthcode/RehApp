@@ -62,60 +62,43 @@ const WaveSurferPlayer = (props) => {
 
   return (
     <>
-      <div ref={containerRef} style={{ minHeight: '120px' }} />
-
-      <button onClick={onPlayClick} style={{ marginTop: '1em' }}>
+    <button onClick={onPlayClick} className="btn-play">
         {isPlaying ? 'Pause' : 'Play'}
       </button>
+      <div ref={containerRef} style={{ minHeight: '120px'}} />
+
+   
 
       <p>Seconds played: {currentTime}</p>
     </>
   )
 }
 
-
-
 export default function Board() {
 
   const [file, setFile] = useState();
   
-  
-
-/*  // const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
-  const urls = [file]
-  const [audioUrl, setAudioUrl] = useState(urls[0])
-   // Swap the audio URL
-   const onUrlChange = useCallback(() => {
-    urls.reverse()
-    setAudioUrl(urls[0])
-  }, []) */
-
-
 
   const handleFileChange = (e) => {
-
-
-
- 
       setFile(e.target.files[0]);
-    
   };
 
-
-  // Render the wavesurfer component
-  // and a button to load a different audio file
-
   return (
-    <div className="board">
+    <div className="home">
       <div className="home-header">
         <h1>Board</h1>
       </div>
+      <input type="file" className="input-board" onChange={handleFileChange}  />
       <section className="file-board">
-       <input type="file" onChange={handleFileChange}  />
+      
 
        <WaveSurferPlayer
-        height={100}
-        waveColor="rgb(200, 0, 200)"
+        height={120}
+
+        barWidth="4"
+        barGap="1"
+        barRadius="2"
+        waveColor="rgb(100, 100, 180)"
         progressColor="rgb(100, 0, 100)"
         url="https://wavesurfer-js.org//wavesurfer-code/examples/audio/audio.wav"
         plugins={[Timeline.create()]}
