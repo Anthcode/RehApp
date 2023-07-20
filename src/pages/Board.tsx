@@ -1,7 +1,7 @@
 import * as React from 'react';
 import WaveSurfer from 'wavesurfer.js';
-
 import Timeline from 'wavesurfer.js/dist/plugins/timeline.js';
+import Comments from '../components/Comments'
 
 const { useRef, useState, useEffect, useCallback } = React;
 
@@ -88,7 +88,10 @@ const Board: React.FC = () => {
         <h1>Board</h1>
       </div>
       <input type="file" className="input-board" onChange={handleFileChange} />
+      <div className="board">
+      <Comments />
       <section className="file-board">
+     
         <WaveSurferPlayer
           height={120}
           barWidth="4"
@@ -100,6 +103,7 @@ const Board: React.FC = () => {
           plugins={[Timeline.create()]}
         />
       </section>
+      </div>
     </div>
   );
 };

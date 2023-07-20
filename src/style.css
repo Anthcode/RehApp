@@ -304,6 +304,7 @@ article {
 
 .file-board{
   width: 90%;
+  height :150px;
   display: grid;
   grid-template-columns: 1fr 6fr; 
   grid-template-rows: 1fr;
@@ -311,13 +312,15 @@ article {
   grid-row-gap: 20px; 
   align-items: center;
   justify-content: center;
-  margin: 18px;
+  margin: 0 18px;
   padding: 14px 16px;
   border-radius: 10px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .input-board{
-  margin: 30px;
+  margin: 10px;
+  height: 60px;
+  display: flex;
 }
 .btn-play{
   width: 60px;
@@ -333,4 +336,28 @@ article {
 .btn-play:hover{
   background-color:#95b2fa;
   color:white;
+}
+.board{
+  display: flex;
+  margin: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.comments{
+  position: relative;
+  width:180px;
+  height: 50vh;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+  color:rgb(37, 5, 156)
+}
+.comments-ul,li{
+  padding: 6px 4px;
+}
+li:hover{
+  color:coral;
+  cursor: pointer;
 }
