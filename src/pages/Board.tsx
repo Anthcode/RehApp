@@ -76,9 +76,7 @@ const WaveSurferPlayer = (props) => {
 
 const Board: React.FC = () => {
   const [file, setFile] = React.useState<File | null>(null);
-  // Używamy typu ChangeEvent<HTMLInputElement> do zdefiniowania typu dla argumentu e.
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Używamy e.currentTarget.files[0], aby uzyskać dostęp do przesłanego pliku.
     if (e.currentTarget.files && e.currentTarget.files.length > 0) {
       setFile(e.currentTarget.files[0]);
     }
