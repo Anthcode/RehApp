@@ -1,3 +1,3 @@
 # RehApp
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/stackblitz-starters-ojkb12)
+[Online StackBlitz ⚡️](https://stackblitz-starters-ojkb12.stackblitz.io)
