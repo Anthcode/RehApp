@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Board from './pages/Board'
 
-export default function App() {
+const App:React.FC =()=> {
   return (
     <div className="app">
       <Routes>
@@ -19,3 +19,4 @@ export default function App() {
     </div>
   );
 }
+export default App

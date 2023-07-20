@@ -1,86 +1,87 @@
 import * as React from 'react';
-import WaveSurfer from 'wavesurfer.js'
-import Timeline from 'wavesurfer.js/dist/plugins/timeline.js'
+import WaveSurfer from 'wavesurfer.js';
 
-const { useRef, useState, useEffect, useCallback } = React
+import Timeline from 'wavesurfer.js/dist/plugins/timeline.js';
+
+const { useRef, useState, useEffect, useCallback } = React;
 
 // WaveSurfer hook
 const useWavesurfer = (containerRef, options) => {
-  const [wavesurfer, setWavesurfer] = useState(null)
+  const [wavesurfer, setWavesurfer] = useState(null);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
 
     const ws = WaveSurfer.create({
       ...options,
       container: containerRef.current,
-    })
+    });
 
-    setWavesurfer(ws)
+    setWavesurfer(ws);
 
     return () => {
-      ws.destroy()
-    }
-  }, [options, containerRef])
+      ws.destroy();
+    };
+  }, [options, containerRef]);
 
-  return wavesurfer
-}
+  return wavesurfer;
+};
 
 // Create a React component that will render wavesurfer.
 // Props are wavesurfer options.
 const WaveSurferPlayer = (props) => {
-  const containerRef = useRef()
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const wavesurfer = useWavesurfer(containerRef, props)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(0);
+  const wavesurfer = useWavesurfer(containerRef, props);
 
   // On play button click
   const onPlayClick = useCallback(() => {
-    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
-  }, [wavesurfer])
+    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+  }, [wavesurfer]);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
-    if (!wavesurfer) return
+    if (!wavesurfer) return;
 
-    setCurrentTime(0)
-    setIsPlaying(false)
+    setTime(0);
+    setIsPlaying(false);
 
-    const subscriptions = [
+
+
+    const subscriptions: (() => void)[] = [
       wavesurfer.on('play', () => setIsPlaying(true)),
       wavesurfer.on('pause', () => setIsPlaying(false)),
-      wavesurfer.on('timeupdate', (currentTime) => setCurrentTime(currentTime)),
-    ]
+      wavesurfer.on('timeupdate', (currentTime: number) => setTime(Number(currentTime.toFixed(2)))),
+    ];
 
     return () => {
-      subscriptions.forEach((unsub) => unsub())
-    }
-  }, [wavesurfer])
+      subscriptions.forEach((unsub) => unsub());
+    };
+  }, [wavesurfer]);
 
   return (
     <>
-    <button onClick={onPlayClick} className="btn-play">
+      <button onClick={onPlayClick} className="btn-play">
         {isPlaying ? 'Pause' : 'Play'}
       </button>
-      <div ref={containerRef} style={{ minHeight: '120px'}} />
-
-   
-
-      <p>Seconds played: {currentTime}</p>
+      <div ref={containerRef} style={{ minHeight: '130px' }} />
+      <p>Seconds played: {time}</p>
     </>
-  )
-}
+  );
+};
 
-export default function Board() {
-
-  const [file, setFile] = useState();
-  
-
-  const handleFileChange = (e) => {
-      setFile(e.target.files[0]);
+const Board: React.FC = () => {
+  const [file, setFile] = React.useState<File | null>(null);
+  // Używamy typu ChangeEvent<HTMLInputElement> do zdefiniowania typu dla argumentu e.
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Używamy e.currentTarget.files[0], aby uzyskać dostęp do przesłanego pliku.
+    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+      setFile(e.currentTarget.files[0]);
+    }
   };
 
   return (
@@ -88,23 +89,20 @@ export default function Board() {
       <div className="home-header">
         <h1>Board</h1>
       </div>
-      <input type="file" className="input-board" onChange={handleFileChange}  />
+      <input type="file" className="input-board" onChange={handleFileChange} />
       <section className="file-board">
-      
-
-       <WaveSurferPlayer
-        height={120}
-
-        barWidth="4"
-        barGap="1"
-        barRadius="2"
-        waveColor="rgb(100, 100, 180)"
-        progressColor="rgb(100, 0, 100)"
-        url="https://wavesurfer-js.org//wavesurfer-code/examples/audio/audio.wav"
-        plugins={[Timeline.create()]}
-      />
-       
-      </section>  
+        <WaveSurferPlayer
+          height={120}
+          barWidth="4"
+          barGap="1"
+          barRadius="2"
+          waveColor="rgb(100, 100, 180)"
+          progressColor="rgb(100, 0, 100)"
+          url="https://wavesurfer-js.org//wavesurfer-code/examples/audio/audio.wav"
+          plugins={[Timeline.create()]}
+        />
+      </section>
     </div>
   );
-}
+};
+export default Board;
