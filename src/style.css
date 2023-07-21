@@ -71,11 +71,10 @@ a:hover::before {
 main {
   height: 100vh;
   min-height: 300px;
-
   border: 1px solid rgb(0, 0, 0);
   margin: 10px 8px;
   border-radius: 23px;
-  background: white;
+  background: rgb(255, 255, 255);
   box-shadow: 2px 2px 4px rgba(23, 70, 109, 0.3);
   display: flex;
   justify-content: center;
@@ -246,6 +245,7 @@ article {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 .wrapp-icon{
   width: 100%;
@@ -304,14 +304,14 @@ article {
 
 .file-board{
   width: 90%;
-  height :150px;
+ 
   display: grid;
   grid-template-columns: 1fr 6fr; 
-  grid-template-rows: 1fr;
+
   grid-column-gap:40px;
   grid-row-gap: 20px; 
   align-items: center;
-  justify-content: center;
+  
   margin: 0 18px;
   padding: 14px 16px;
   border-radius: 10px;
@@ -361,3 +361,4 @@ li:hover{
   color:coral;
   cursor: pointer;
 }
+

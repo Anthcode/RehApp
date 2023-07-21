@@ -83,7 +83,7 @@ const Board: React.FC = () => {
   };
 
   return (
-    <div className="home">
+    <div className="userPage">
       <div className="home-header">
         <h1>Board</h1>
       </div>
@@ -91,7 +91,6 @@ const Board: React.FC = () => {
       <div className="board">
       <Comments />
       <section className="file-board">
-     
         <WaveSurferPlayer
           height={120}
           barWidth="4"
