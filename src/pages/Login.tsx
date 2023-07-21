@@ -1,18 +1,11 @@
 import * as React from 'react';
-
-export default function Login() {
+const Login: React.FC = ()=> {
   return (
-
-   
     <div className="login">
-
-     
         <form className="form-login">
         <div className="login-header">
           <h2>Login</h2>
-      
           </div>
-         
           <div className="input-div">
             <input
               type="email"
@@ -38,8 +31,7 @@ export default function Login() {
             Register
           </button>
         </form>
-
     </div>
-   
   );
 }
+export default Login

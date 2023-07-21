@@ -1,151 +1,109 @@
 import * as React from 'react';
-import WaveSurfer from 'wavesurfer.js'
-import Timeline from 'wavesurfer.js/dist/plugins/timeline.js'
+import WaveSurfer from 'wavesurfer.js';
+import Timeline from 'wavesurfer.js/dist/plugins/timeline.js';
+import Comments from '../components/Comments'
 
-const { useRef, useState, useEffect, useCallback } = React
+const { useRef, useState, useEffect, useCallback } = React;
 
 // WaveSurfer hook
 const useWavesurfer = (containerRef, options) => {
-  const [wavesurfer, setWavesurfer] = useState(null)
+  const [wavesurfer, setWavesurfer] = useState(null);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
 
     const ws = WaveSurfer.create({
       ...options,
       container: containerRef.current,
-    })
+    });
 
-    setWavesurfer(ws)
+    setWavesurfer(ws);
 
     return () => {
-      ws.destroy()
-    }
-  }, [options, containerRef])
+      ws.destroy();
+    };
+  }, [options, containerRef]);
 
-  return wavesurfer
-}
+  return wavesurfer;
+};
 
 // Create a React component that will render wavesurfer.
 // Props are wavesurfer options.
 const WaveSurferPlayer = (props) => {
-  const containerRef = useRef()
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const wavesurfer = useWavesurfer(containerRef, props)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(0);
+  const wavesurfer = useWavesurfer(containerRef, props);
 
   // On play button click
   const onPlayClick = useCallback(() => {
-    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
-  }, [wavesurfer])
+    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+  }, [wavesurfer]);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
-    if (!wavesurfer) return
+    if (!wavesurfer) return;
 
-    setCurrentTime(0)
-    setIsPlaying(false)
+    setTime(0);
+    setIsPlaying(false);
 
-    const subscriptions = [
+
+
+    const subscriptions: (() => void)[] = [
       wavesurfer.on('play', () => setIsPlaying(true)),
       wavesurfer.on('pause', () => setIsPlaying(false)),
-      wavesurfer.on('timeupdate', (currentTime) => setCurrentTime(currentTime)),
-    ]
+      wavesurfer.on('timeupdate', (currentTime: number) => setTime(Number(currentTime.toFixed(2)))),
+    ];
 
     return () => {
-      subscriptions.forEach((unsub) => unsub())
-    }
-  }, [wavesurfer])
+      subscriptions.forEach((unsub) => unsub());
+    };
+  }, [wavesurfer]);
 
   return (
     <>
-      <div ref={containerRef} style={{ minHeight: '120px' }} />
-
-      <button onClick={onPlayClick} style={{ marginTop: '1em' }}>
+      <button onClick={onPlayClick} className="btn-play">
         {isPlaying ? 'Pause' : 'Play'}
       </button>
-
-      <p>Seconds played: {currentTime}</p>
+      <div ref={containerRef} style={{ minHeight: '130px' }} />
+      <p>Seconds played: {time}</p>
     </>
-  )
-}
+  );
+};
 
-// Another React component that will render two wavesurfers
-const App = () => {
-  const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
-  const [audioUrl, setAudioUrl] = useState(urls[0])
-
-  // Swap the audio URL
-  const onUrlChange = useCallback(() => {
-    urls.reverse()
-    setAudioUrl(urls[0])
-  }, [])
-
-  // Render the wavesurfer component
-  // and a button to load a different audio file
-  return (
-    <>
-      <WaveSurferPlayer
-        height={100}
-        waveColor="rgb(200, 0, 200)"
-        progressColor="rgb(100, 0, 100)"
-        url={audioUrl}
-        plugins={[Timeline.create()]}
-      />
-
-      <button onClick={onUrlChange}>Change audio</button>
-    </>
-  )
-}
-
-export default function Board() {
-
-  const [file, setFile] = useState<File>();
-  
-  
-
-  const urls = ['/examples/audio/audio.wav', '/examples/audio/stereo.mp3']
-  const [audioUrl, setAudioUrl] = useState(urls[0])
-   // Swap the audio URL
-   const onUrlChange = useCallback(() => {
-    urls.reverse()
-    setAudioUrl(urls[0])
-  }, [])
-
-
-
-  const handleFileChange = (e) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
+const Board: React.FC = () => {
+  const [file, setFile] = React.useState<File | null>(null);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+      setFile(e.currentTarget.files[0]);
     }
   };
 
-
-  // Render the wavesurfer component
-  // and a button to load a different audio file
-
   return (
-    <div className="board">
+    <div className="userPage">
       <div className="home-header">
         <h1>Board</h1>
       </div>
+      <input type="file" className="input-board" onChange={handleFileChange} />
+      <div className="board">
+      <Comments />
       <section className="file-board">
-       <input type="file" onChange={handleFileChange}  />
-
-       <WaveSurferPlayer
-        height={100}
-        waveColor="rgb(200, 0, 200)"
-        progressColor="rgb(100, 0, 100)"
-        url={audioUrl}
-        plugins={[Timeline.create()]}
-      />
-
-      <button onClick={onUrlChange}>Change audio</button>
-       
-      </section>  
+        <WaveSurferPlayer
+          height={120}
+          barWidth="4"
+          barGap="1"
+          barRadius="2"
+          waveColor="rgb(100, 100, 180)"
+          progressColor="rgb(100, 0, 100)"
+          url="https://wavesurfer-js.org//wavesurfer-code/examples/audio/audio.wav"
+          plugins={[Timeline.create()]}
+        />
+      </section>
+      </div>
     </div>
   );
-}
+};
+export default Board;
